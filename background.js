@@ -1,5 +1,27 @@
 let isActive = false;
 
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    id: "elementToRemove",
+    title: "remove element",
+    contexts: ["all"]
+  });
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "elementToRemove") {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      function: ()=>{
+        window.capturedElement.remove();
+      }
+    });
+  }
+});
+
+
+
 chrome.action.onClicked.addListener((tab) => {
   isActive = !isActive;
 

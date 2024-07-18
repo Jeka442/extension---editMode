@@ -3,7 +3,7 @@
   "name": "Edit page extension",
   "version": "1.0",
   "description": "An extension that toggles between edit mode and view mode",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "contextMenus"],
   "background": {
     "service_worker": "background.js"
   },
@@ -19,5 +19,11 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
 }
