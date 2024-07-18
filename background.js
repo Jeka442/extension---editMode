@@ -1,4 +1,5 @@
 let isActive = false;
+
 chrome.action.onClicked.addListener((tab) => {
   isActive = !isActive;
 
@@ -12,21 +13,16 @@ chrome.action.onClicked.addListener((tab) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.scripting.executeScript({
       target: { tabId: tabs[0].id },
-      function: (state) => {
-        function cancelOnClick(event) {
-          event.stopPropagation();
-          event.preventDefault();
-        }
-
-        if (state) {
-          document.body.contentEditable = true;
-          document.body.addEventListener("click", cancelOnClick, true);
-        } else {
-          document.body.contentEditable = false;
-          document.body.removeEventListener("click", cancelOnClick, true);
-        }
-      },
+      function: toggleEditMode,
       args: [isActive],
     });
   });
 });
+
+function toggleEditMode(state) {
+  if (state) {
+    document.body.contentEditable = true;
+  } else {
+    document.body.contentEditable = false;
+  }
+}
